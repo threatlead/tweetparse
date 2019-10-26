@@ -63,6 +63,14 @@ class User:
         self.statuses_count = data['profile_user']['statuses_count']
         self.verified = data['profile_user']['verified']
 
+    @property
+    def as_json(self):
+        user_dict = self.__dict__
+        for key in ['debug', 'raw', 'max_position', 'min_position']:
+            del user_dict[key]
+        user_dict['created_at'] = self.created_at.isoformat()
+        return json.dumps(user_dict)
+
     def get_tweets(self):
         search_params = Twitter.search_params
         search_params['max_position'] = self.min_position
