@@ -26,6 +26,14 @@ class Tweet:
             count = int(tweet_div.find(xpath, first=True).attrs['data-tweet-stat-count'])
             self.__setattr__(item, count)
 
+    @property
+    def as_dict(self):
+        tweet_dict = self.__dict__
+        for key in ['debug', ]:
+            del tweet_dict[key]
+        tweet_dict['time'] = self.time.isoformat()
+        return tweet_dict
+
     def _parse_links(self, tweet_text_paragraph):
         # Parser and Store - External Links, Hash Tags, Tagged Users and Other URls
         for link in tweet_text_paragraph.find('a'):
