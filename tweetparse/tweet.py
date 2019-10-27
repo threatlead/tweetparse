@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import tweetparse.twitter
 
 
@@ -13,7 +13,7 @@ class Tweet:
         self.screen_name = tweet_div.attrs['data-screen-name']
         self.user_id = int(tweet_div.attrs['data-user-id'])
         self.permalink_path = tweetparse.twitter.Twitter.base_url + tweet_div.attrs['data-permalink-path']
-        self.time = datetime.utcfromtimestamp(int(tweet_div.find('span.js-short-timestamp', first=True).attrs['data-time']))
+        self.time = datetime.utcfromtimestamp(int(tweet_div.find('span.js-short-timestamp', first=True).attrs['data-time'])).replace(tzinfo=timezone.utc)
         # -- parse tweet text and hyperlinks
         tweet_text_paragraph = tweet_div.find('p.tweet-text', first=True)
         self.text = tweet_text_paragraph.text
